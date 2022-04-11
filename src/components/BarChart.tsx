@@ -10,6 +10,7 @@ import {
 import { Bar } from 'react-chartjs-2'
 import { useRecoilValue } from 'recoil'
 import { ChartData } from '../store/ChartData'
+import BarTable from './BarTable'
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 const options = {
@@ -30,9 +31,15 @@ const options = {
   },
 }
 
-const StackedBar: React.FC = () => {
+const BarChart: React.FC = () => {
   const data = useRecoilValue(ChartData)
-  return <Bar options={options} data={data} />
+  return (
+    <div className="wrapper">
+      <Bar options={options} data={data} />
+      <hr />
+      <BarTable />
+    </div>
+  )
 }
 
-export default StackedBar
+export default BarChart

@@ -16,7 +16,7 @@ export const RowHeaderCellValues = selector<string[]>({
   get: ({ get }) => {
     if (get(rowAtom).length < get(TableSizeState).rows) {
       const fillerArrayLength = get(TableSizeState).rows - get(rowAtom).length
-      const fillerArray = [...Array(fillerArrayLength)].map(value => '')
+      const fillerArray = Array.from({ length: fillerArrayLength }, value => '')
       return [...get(rowAtom), ...fillerArray]
     } else {
       return get(rowAtom)
@@ -31,7 +31,7 @@ export const ColumnHeaderCellValues = selector<string[]>({
     if (get(columnAtom).length < get(TableSizeState).columns) {
       const fillerArrayLength =
         get(TableSizeState).columns - get(columnAtom).length
-      const fillerArray = [...Array(fillerArrayLength)].map(value => '')
+      const fillerArray = Array.from({ length: fillerArrayLength }, value => '')
       return [...get(columnAtom), ...fillerArray]
     } else {
       return get(columnAtom)
