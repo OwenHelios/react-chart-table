@@ -2,7 +2,7 @@ import { atom } from 'recoil'
 
 export const DataCellValue = (cellId: string) =>
   logCells(cellId, () =>
-    atom({
+    atom<string>({
       key: `${cellId}`,
       default: '',
     })

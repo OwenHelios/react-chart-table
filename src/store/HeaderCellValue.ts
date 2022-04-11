@@ -1,39 +1,41 @@
 import { atom, selector } from 'recoil'
 import { TableSizeState } from './TableSizeState'
 
-const rowAtom = atom({
+const rowAtom = atom<string[]>({
   key: 'rowAtom',
   default: [],
 })
 
-const columnAtom = atom({
+const columnAtom = atom<string[]>({
   key: 'columnAtom',
   default: [],
 })
 
-export const RowHeaderCellValues = selector({
+export const RowHeaderCellValues = selector<string[]>({
   key: 'RowHeader',
-  get: ({ get }) => get(rowAtom),
-  set: ({ get, set }, newValue) => {
+  get: ({ get }) => {
     if (get(rowAtom).length < get(TableSizeState).rows) {
       const fillerArrayLength = get(TableSizeState).rows - get(rowAtom).length
       const fillerArray = [...Array(fillerArrayLength)].map(value => '')
-      set(rowAtom, [...get(rowAtom), ...fillerArray])
+      return [...get(rowAtom), ...fillerArray]
+    } else {
+      return get(rowAtom)
     }
-    set(rowAtom, newValue)
   },
+  set: ({ set }, newValue) => set(rowAtom, newValue),
 })
 
-export const ColumnHeaderCellValues = selector({
+export const ColumnHeaderCellValues = selector<string[]>({
   key: 'ColumnHeader',
-  get: ({ get }) => get(columnAtom),
-  set: ({ get, set }, newValue) => {
+  get: ({ get }) => {
     if (get(columnAtom).length < get(TableSizeState).columns) {
       const fillerArrayLength =
         get(TableSizeState).columns - get(columnAtom).length
       const fillerArray = [...Array(fillerArrayLength)].map(value => '')
-      set(columnAtom, [...get(columnAtom), ...fillerArray])
+      return [...get(columnAtom), ...fillerArray]
+    } else {
+      return get(columnAtom)
     }
-    set(columnAtom, newValue)
   },
+  set: ({ set }, newValue) => set(columnAtom, newValue),
 })

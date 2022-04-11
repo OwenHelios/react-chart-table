@@ -9,15 +9,14 @@ import {
 } from 'chart.js'
 import { Bar } from 'react-chartjs-2'
 import { useRecoilValue } from 'recoil'
-import { DataCellValue } from '../store/DataCellValue'
-import { TableSizeState } from '../store/TableSizeState'
+import { ChartData } from '../store/ChartData'
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
-export const options = {
+const options = {
   plugins: {
     title: {
       display: true,
-      text: 'Horizontal Stacked Bar Chart',
+      text: 'Vertical Stacked Bar Chart',
     },
   },
   responsive: true,
@@ -31,35 +30,8 @@ export const options = {
   },
 }
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July']
-
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: 'Sunny Days',
-      data: labels.map(() => Math.ceil(Math.random() * 1000)),
-      backgroundColor: 'rgb(255, 99, 132)',
-    },
-    {
-      label: 'Snowy Days',
-      data: labels.map(() => Math.ceil(Math.random() * 1000)),
-      backgroundColor: 'rgb(75, 192, 192)',
-    },
-    {
-      label: 'Rainy Days',
-      data: labels.map(() => Math.ceil(Math.random() * 1000)),
-      backgroundColor: 'rgb(53, 162, 235)',
-    },
-  ],
-}
-
 const StackedBar: React.FC = () => {
-  const tableSize = useRecoilValue(TableSizeState)
-  for (let i = 0; i < tableSize.rows; i++) {
-    const cellId = 'rowHead_' + i
-    const cellValue = useRecoilValue(DataCellValue(cellId))
-  }
+  const data = useRecoilValue(ChartData)
   return <Bar options={options} data={data} />
 }
 

@@ -10,11 +10,20 @@ import {
 
 import { useRecoilState } from 'recoil'
 import { TableSizeState } from '../store/TableSizeState'
+import ColumnHeaderCell from './ColumnHeaderCell'
 import DataCell from './DataCell'
+import RowHeaderCell from './RowHeaderCell'
 import StackedBar from './StackedBar'
 
 export default function Data() {
   const [tableSize, setTableSize] = useRecoilState(TableSizeState)
+
+  const addRow = () => {
+    setTableSize({ ...tableSize, rows: tableSize.rows + 1 })
+  }
+  const addColumn = () => {
+    setTableSize({ ...tableSize, columns: tableSize.columns + 1 })
+  }
 
   return (
     <div>
@@ -27,7 +36,7 @@ export default function Data() {
               <TableCell>Dessert (100g serving)</TableCell>
               {[...Array(tableSize.columns)].map((column, columnIndex) => (
                 <TableCell align="right" key={columnIndex}>
-                  <DataCell cellId={`columnHead_${columnIndex}`} />
+                  <ColumnHeaderCell columnIndex={columnIndex} />
                 </TableCell>
               ))}
             </TableRow>
@@ -39,7 +48,7 @@ export default function Data() {
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  <DataCell cellId={`rowHead_${rowIndex}`} />
+                  <RowHeaderCell rowIndex={rowIndex} />
                 </TableCell>
                 {[...Array(tableSize.columns)].map((column, columnIndex) => (
                   <TableCell align="right" key={columnIndex}>
@@ -51,6 +60,8 @@ export default function Data() {
           </TableBody>
         </Table>
       </TableContainer>
+      <button onClick={addRow}>Add Row</button>
+      <button onClick={addColumn}>Add Column</button>
     </div>
   )
 }
