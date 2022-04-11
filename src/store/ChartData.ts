@@ -1,6 +1,7 @@
 import { selector } from 'recoil'
 import { DataCellValue } from './DataCellValue'
 import { ColumnHeaderCellValues, RowHeaderCellValues } from './HeaderCellValue'
+import { TableSizeState } from './TableSizeState'
 
 var colors = []
 
@@ -9,19 +10,21 @@ export const ChartData = selector({
   get: ({ get }) => {
     const columnLabels = get(ColumnHeaderCellValues)
     const rowLabels = get(RowHeaderCellValues)
+    const tableSize = get(TableSizeState)
 
     if (colors.length === 0) {
       rowLabels.forEach(r => colors.push(getRandomColor()))
     }
 
     const data = {
-      labels: columnLabels,
-      datasets: rowLabels.map((rowLabel, rowIndex) => ({
+      labels: columnLabels.slice(0, tableSize.columns),
+      datasets: [...Array(tableSize.rows)].map((rowLabel, rowIndex) => ({
         label: rowLabel,
-        data: columnLabels.map((columnLabel, columnIndex) =>
-          get(DataCellValue(`${rowIndex},${columnIndex}`))
+        data: [...Array(tableSize.columns)].map((columnLabel, columnIndex) =>
+          Number(get(DataCellValue(`${rowIndex},${columnIndex}`)))
         ),
         backgroundColor: colors[rowIndex],
+        borderColor: colors[rowIndex],
       })),
     }
     return data

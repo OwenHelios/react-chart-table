@@ -7,13 +7,14 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js'
+import { ChartOptions } from 'chart.js'
 import { Bar } from 'react-chartjs-2'
 import { useRecoilValue } from 'recoil'
 import { ChartData } from '../store/ChartData'
 import BarTable from './BarTable'
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
-const options = {
+const options: ChartOptions<'bar'> = {
   plugins: {
     title: {
       display: true,

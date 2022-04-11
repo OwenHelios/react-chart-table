@@ -1,40 +1,46 @@
 import React from 'react'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
+import type { ChartOptions, ChartData } from 'chart.js'
 import { Pie } from 'react-chartjs-2'
+import BarTable from './BarTable'
+import { ChartData as TableData } from '../store/ChartData'
+import { useRecoilValue } from 'recoil'
+import { tab } from '@testing-library/user-event/dist/tab'
 
 ChartJS.register(ArcElement, Tooltip, Legend)
 
-export const data = {
-  labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-  datasets: [
-    {
-      label: '# of Votes',
-      data: [12, 19, 3, 5, 2, 3],
-      backgroundColor: [
-        'rgb(241, 11, 61)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)',
-      ],
-      borderColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)',
-      ],
-      borderWidth: 1,
+const options: ChartOptions<'pie'> = {
+  plugins: {
+    title: {
+      display: true,
+      text: 'Vertical Stacked Bar Chart',
     },
-  ],
+  },
+  responsive: true,
 }
 
 export default function PieChart() {
+  const tableData = useRecoilValue(TableData)
+
+  const data: ChartData<'pie', number[], string> = {
+    labels: tableData.labels,
+    datasets: [
+      {
+        label: tableData.datasets[0].label,
+        data: tableData.datasets[0].data,
+        backgroundColor: tableData.datasets.map(d => d.backgroundColor),
+        borderColor: tableData.datasets.map(d => d.borderColor),
+        borderWidth: 1,
+      },
+    ],
+  }
   return (
-    <div className="chart-wrapper">
-      <Pie data={data} />
-    </div>
+    <>
+      <div className="chart-wrapper">
+        <Pie options={options} data={data} />
+      </div>
+      <hr />
+      <BarTable />
+    </>
   )
 }
