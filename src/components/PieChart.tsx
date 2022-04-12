@@ -5,7 +5,6 @@ import { Pie } from 'react-chartjs-2'
 import BarTable from './BarTable'
 import { ChartData as TableData } from '../store/ChartData'
 import { useRecoilValue } from 'recoil'
-import { tab } from '@testing-library/user-event/dist/tab'
 
 ChartJS.register(ArcElement, Tooltip, Legend)
 

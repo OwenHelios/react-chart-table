@@ -18,9 +18,9 @@ export const ChartData = selector({
 
     const data = {
       labels: columnLabels.slice(0, tableSize.columns),
-      datasets: [...Array(tableSize.rows)].map((rowLabel, rowIndex) => ({
-        label: rowLabel,
-        data: [...Array(tableSize.columns)].map((columnLabel, columnIndex) =>
+      datasets: [...Array(tableSize.rows)].map((row, rowIndex) => ({
+        label: rowLabels[rowIndex],
+        data: [...Array(tableSize.columns)].map((column, columnIndex) =>
           Number(get(DataCellValue(`${rowIndex},${columnIndex}`)))
         ),
         backgroundColor: colors[rowIndex],
